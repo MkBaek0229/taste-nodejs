@@ -1,5 +1,6 @@
 "use strict";
 
+import UserStorage from "../../models/UserStorage.js";
 
 const output = {
     home: (req, res) => {
@@ -10,30 +11,29 @@ const output = {
     },
 };
 
-const users = {
-    id: ["alsrl6678", "백개발", "백팀장"],
-    password: ["1234", "1234", "123456"],
-}
 
 const process = {
     login: (req, res) => {
         const id = req.body.id,
         password = req.body.password;
-     
-    if (users.id.includes(id)) {
-        const idx = users.id.indexOf(id);
+        
+         // UserStorage 모듈에서 getUsers 메서드를 호출하여 users 객체에 접근
+         const users = UserStorage().getUsers("id", "password");
+         console.log(users); // users 객체 출력
+   
+         const response = {};
+     if (users.id.includes(id)) {
+       const idx = users.id.indexOf(id);
         if (users.password[idx] === password) {
-            return res.json({
-                success: true,
-            });
+           response.success = true;
+           return res.json(response);
         }
     }
-
-    return res.json({
-        success: false,
-        msg: "로그인에 실패하셨습니다.",
-    });
-},
+    
+    response.success = false;
+    response.msg = "로그인에 실패하셨습니다."
+    return res.json(response);    
+    },
 }
 const ctrl = { output, process};
 
