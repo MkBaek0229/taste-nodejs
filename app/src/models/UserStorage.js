@@ -8,9 +8,11 @@ function UserStorage() {
         name: ["백민기", "백개발", "백팀장"],
     }
  // users 객체를 반환하는 getter 함수
- function getUsers(...fields) {
-    const newUsers = fields.reduce((newUsers, field) => {
-        if(users.hasOwnProperty(field)){
+
+ // ...fileds 인자로넘어온 값들 배열화 ex [ 'id', 'password' ]
+ function getUsers(...fileds) {
+    const newUsers = fileds.reduce((newUsers,field)=> {
+        if (users.hasOwnProperty(field)) {
             newUsers[field] = users[field];
         }
         return newUsers;
